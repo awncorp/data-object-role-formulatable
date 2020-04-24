@@ -44,7 +44,10 @@ method formulate_object(Str $name, Any $value) {
 
   my $package = Data::Object::Space->new($name)->load;
 
-  if (ref $value eq 'ARRAY') {
+  if (Scalar::Util::blessed($value) && $value->isa($package)) {
+    $results = $value;
+  }
+  elsif (ref $value eq 'ARRAY') {
     $results = [map $package->new($_), @$value];
   }
   else {

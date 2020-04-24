@@ -18,20 +18,12 @@ SYNOPSIS
     
       with 'Data::Object::Role::Formulatable';
     
-      has 'fname' => (
-        is => 'ro',
-        isa => 'Object',
-        req => 1
-      );
-    
-      has 'dates' => (
-        is => 'ro',
-        isa => 'ArrayRef[Object]'
-      );
+      has 'name';
+      has 'dates';
     
       sub formulate {
         {
-          fname => 'test/data/str',
+          name => 'test/data/str',
           dates => 'test/data/str'
         }
       }
@@ -39,12 +31,15 @@ SYNOPSIS
       package main;
     
       my $person = Test::Person->new({
-        fname => 'levi nolan',
+        name => 'levi nolan',
         dates => ['1587717124', '1587717169']
       });
     
-      # $person->fname; # Test::Data::Str object
-      # $person->dates; # Test::Data::Str object(s)
+      # $person->name;
+      # <Test::Data::Str>
+    
+      # $person->dates;
+      # [<Test::Data::Str>]
 
 DESCRIPTION
 

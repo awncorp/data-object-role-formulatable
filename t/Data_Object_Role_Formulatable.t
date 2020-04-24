@@ -33,20 +33,12 @@ Formulatable Role for Perl 5
 
   with 'Data::Object::Role::Formulatable';
 
-  has 'fname' => (
-    is => 'ro',
-    isa => 'Object',
-    req => 1
-  );
-
-  has 'dates' => (
-    is => 'ro',
-    isa => 'ArrayRef[Object]'
-  );
+  has 'name';
+  has 'dates';
 
   sub formulate {
     {
-      fname => 'test/data/str',
+      name => 'test/data/str',
       dates => 'test/data/str'
     }
   }
@@ -54,12 +46,15 @@ Formulatable Role for Perl 5
   package main;
 
   my $person = Test::Person->new({
-    fname => 'levi nolan',
+    name => 'levi nolan',
     dates => ['1587717124', '1587717169']
   });
 
-  # $person->fname; # Test::Data::Str object
-  # $person->dates; # Test::Data::Str object(s)
+  # $person->name;
+  # <Test::Data::Str>
+
+  # $person->dates;
+  # [<Test::Data::Str>]
 
 =cut
 
@@ -101,8 +96,8 @@ $subs->synopsis(fun($tryable) {
 
   is ref $result->dates, 'ARRAY';
 
-  ok $result->fname;
-  ok $result->fname->isa('Test::Data::Str');
+  ok $result->name;
+  ok $result->name->isa('Test::Data::Str');
   ok $result->dates->[0]->isa('Test::Data::Str');
   ok $result->dates->[1]->isa('Test::Data::Str');
 

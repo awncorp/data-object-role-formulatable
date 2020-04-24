@@ -1,6 +1,11 @@
 Changelog for Data-Object-Role-Formulatable
 
-0.01 2020-04-24T09:05:43
+0.02 2020-04-24T15:02:33
+ - Added release updates
+ - Account for blessed constructor args
+
+0.01 2020-04-24T09:05:44
+ - Built release version 0.01
  - Update documentation
  - Initial implementation
  - Initial commit
