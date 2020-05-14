@@ -15,9 +15,6 @@ use Data::Object::Space;
 use Scalar::Util ();
 
 with 'Data::Object::Role::Buildable';
-with 'Data::Object::Role::Errable';
-with 'Data::Object::Role::Stashable';
-with 'Data::Object::Role::Tryable';
 
 requires 'formulate';
 
@@ -34,7 +31,44 @@ around BUILDARGS(@args) {
 around formulate($args) {
   my $results;
 
-  $results = $self->formulation($args, $self->$orig($args));
+  my $form = $self->$orig($args);
+
+  # before
+  if ($self->can('before_formulate')) {
+    my $config = $self->before_formulate($args);
+
+    for my $key (keys %$config) {
+      next unless $form->{$key};
+      next unless exists $args->{$key};
+
+      my $name = $config->{$key} eq '1' ?
+        "before_formulate_${key}" : $config->{$key};
+
+      next unless $self->can($name);
+
+      $args->{$key} = $self->$name($args->{$key});
+    }
+  }
+
+  # formulation
+  $results = $self->formulation($args, $form);
+
+  # after
+  if ($self->can('after_formulate')) {
+    my $config = $self->after_formulate($results);
+
+    for my $key (keys %$config) {
+      next unless $form->{$key};
+      next unless exists $results->{$key};
+
+      my $name = $config->{$key} eq '1' ?
+        "after_formulate_${key}" : $config->{$key};
+
+      next unless $self->can($name);
+
+      $results->{$key} = $self->$name($results->{$key});
+    }
+  }
 
   return $results;
 }
